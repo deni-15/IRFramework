@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Serbian CERT IR Framework — Interactive</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #0F1E2E;
+  color: #E0E4E6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  padding: 36px 20px 24px;
+  border-bottom: 1px solid #1E3A52;
+}
+.header .badge {
+  display: inline-block;
+  background: #9ABDDC;
+  color: #0F1E2E;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+.header h1 {
+  font-size: clamp(18px, 4vw, 28px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+.header p {
+  font-size: 13px;
+  color: #9ABDDC;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ── Main layout ── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* ── Layer stack ── */
+.layers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.layer-card {
+  border-radius: 14px;
+  border: 1.5px solid #1E3A52;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #162840;
+}
+.layer-card:hover { border-color: #9ABDDC; transform: translateX(6px); }
+.layer-card.active { border-color: #9ABDDC; transform: translateX(0); }
+
+.layer-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+  transition: background 0.2s;
+}
+.layer-card.active .layer-header { background: #1E3A52; }
+
+.layer-num {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  flex-shrink: 0;
+  color: #0F1E2E;
+}
+
+.layer-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.layer-title-group { flex: 1; }
+.layer-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+.layer-subtitle {
+  font-size: 11px;
+  color: #9ABDDC;
+  margin-top: 2px;
+}
+
+.layer-toggle {
+  font-size: 18px;
+  color: #9ABDDC;
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+.layer-card.active .layer-toggle { transform: rotate(180deg); }
+
+/* ── Layer detail ── */
+.layer-detail {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.layer-card.active .layer-detail { max-height: 600px; }
+
+.layer-content {
+  padding: 0 22px 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 600px) {
+  .layer-content { grid-template-columns: 1fr; }
+}
+
+.detail-block { }
+.detail-block h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: #9ABDDC;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.detail-block ul { list-style: none; }
+.detail-block ul li {
+  font-size: 12.5px;
+  color: #B0C8E8;
+  padding: 5px 0;
+  border-bottom: 1px solid #1E3A52;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.detail-block ul li:last-child { border-bottom: none; }
+.detail-block ul li::before {
+  content: '—';
+  color: #9ABDDC;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 12px;
+}
+.status-active   { background: #063B28; color: #34D399; border: 1px solid #34D399; }
+.status-prep     { background: #3B2A06; color: #F59E0B; border: 1px solid #F59E0B; }
+.status-starting { background: #1E3A52; color: #9ABDDC; border: 1px solid #9ABDDC; }
+
+/* ── Flow diagram (horizontal on desktop) ── */
+.flow-section {
+  margin-bottom: 40px;
+}
+.flow-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #9ABDDC;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.flow-node {
+  background: #162840;
+  border: 1.5px solid #1E3A52;
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: center;
+  min-width: 120px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.flow-node:hover { border-color: #9ABDDC; background: #1E3A52; }
+.flow-node .fn-icon { font-size: 20px; margin-bottom: 4px; }
+.flow-node .fn-num  { font-size: 10px; color: #9ABDDC; font-weight: 700; }
+.flow-node .fn-name { font-size: 11px; color: #E0E4E6; font-weight: 600; margin-top: 2px; }
+.flow-arrow { color: #9ABDDC; font-size: 20px; flex-shrink: 0; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid #1E3A52;
+  font-size: 11px;
+  color: #4A6A85;
+}
+.footer a { color: #9ABDDC; text-decoration: none; }
+
+/* ── Tooltip / key message ── */
+.key-msg {
+  background: #1E3A52;
+  border-left: 4px solid #9ABDDC;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: #B0C8E8;
+  font-style: italic;
+  margin-top: 8px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">NATIONAL CERT — REPUBLIC OF SERBIA</div>
+  <h1>Cybersecurity Incident Response Framework</h1>
+  <p>CRDF Global Regional Cybersecurity Fellowship  ·  Daniela Androvic, MSc</p>
+</div>
+
+<div class="container">
+
+  <!-- Flow diagram -->
+  <div class="flow-section">
+    <div class="flow-title">Five-Layer Model — click any layer to explore</div>
+    <div class="flow">
+      <div class="flow-node" onclick="toggleLayer(0)">
+        <div class="fn-icon">📡</div>
+        <div class="fn-num">LAYER 1</div>
+        <div class="fn-name">Threat Intelligence</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" onclick="toggleLayer(1)">
+        <div class="fn-icon">🎯</div>
+        <div class="fn-num">LAYER 2</div>
+        <div class="fn-name">Tactical Mapping</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" onclick="toggleLayer(2)">
+        <div class="fn-icon">📋</div>
+        <div class="fn-num">LAYER 3</div>
+        <div class="fn-name">Playbooks</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" onclick="toggleLayer(3)">
+        <div class="fn-icon">⚖</div>
+        <div class="fn-num">LAYER 4</div>
+        <div class="fn-name">Risk Assessment</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" onclick="toggleLayer(4)">
+        <div class="fn-icon">📄</div>
+        <div class="fn-num">LAYER 5</div>
+        <div class="fn-name">Final Report</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layer cards -->
+  <div class="layers" id="layerList"></div>
+
+  <div class="key-msg">
+    💡 Each layer feeds the next — from raw intelligence to regulatory reporting.
+    The framework strengthens with every incident it handles.
+  </div>
+
+</div>
+
+<div class="footer">
+  Strengthening the Serbian Cybersecurity Incident Response Framework
+  through the adoption of U.S. best practices, standards, and methodologies.<br/>
+  <a href="#">CRDF Global Regional Cybersecurity Fellowship</a>  ·
+  Grounded in NIST CSF 2.0 / 800-61r3  ·  MITRE ATT&CK  ·  Serbian Law on Information Security
+</div>
+
+<script>
+const LAYERS = [
+  {
+    num: 1,
+    icon: "📡",
+    title: "Threat Intelligence",
+    subtitle: "Foundation for all response actions",
+    color: "#9ABDDC",
+    status: "active",
+    statusLabel: "✓ In use",
+    tools: ["MISP — Malware Information Sharing Platform", "Shadow Server — daily global reports", "Early warning system (active)", "National CERT early warning infrastructure"],
+    provides: ["Structured IOC feeds and malware artifacts", "Threat intelligence from trusted communities", "Early detection of compromised systems", "Indicators of Compromise (IoCs) for immediate action"],
+    nist: "Supports NIST CSF 2.0 — Identify & Detect functions",
+    keyMessage: "Without intelligence, you are always reacting. With it, you anticipate."
+  },
+  {
+    num: 2,
+    icon: "🎯",
+    title: "Tactical Mapping — MITRE ATT&CK",
+    subtitle: "Aligning response to real attacker behavior",
+    color: "#5A8AB0",
+    status: "prep",
+    statusLabel: "⏳ In preparation",
+    tools: ["MITRE ATT&CK knowledge base", "TTP identification and mapping", "Threat actor profiling", "ATT&CK Navigator (planned)"],
+    provides: ["Tactics — why attackers do what they do", "Techniques — how they execute each tactic", "Procedures — exact tools and steps used", "Threat actor correlation and attribution"],
+    nist: "Supports NIST CSF 2.0 — Identify & Respond functions",
+    keyMessage: "Knowing how attackers behave means your response addresses the real threat — not just its symptoms."
+  },
+  {
+    num: 3,
+    icon: "📋",
+    title: "Playbooks & Standard Operating Procedures",
+    subtitle: "Standardized, reusable response templates",
+    color: "#9ABDDC",
+    status: "active",
+    statusLabel: "✓ In use",
+    tools: ["NIST SP 800-61r3 lifecycle structure", "NIST CSF 2.0 framework", "Incident-specific SOP templates", "Forensic tools & sandbox environment (Analysis phase)"],
+    provides: ["Identification → Initial Assessment → Evidence Collection", "Analysis → Protective Measures → Recovery → Reporting", "Consistent structure across all incident types", "ATT&CK TTPs embedded in each relevant step"],
+    nist: "Directly implements NIST SP 800-61r3 incident handling lifecycle",
+    keyMessage: "A playbook turns expert knowledge into a repeatable procedure — so the right response happens every time."
+  },
+  {
+    num: 4,
+    icon: "⚖",
+    title: "Risk Assessment",
+    subtitle: "Consistent, objective scoring for every incident",
+    color: "#5A8AB0",
+    status: "starting",
+    statusLabel: "🔄 Starting rollout",
+    tools: ["5×5 Likelihood × Impact matrix", "NIST SP 800-30 methodology", "Contextual modifier scoring", "Risk Assessment Tool (web app)"],
+    provides: ["Risk score: Critical / High / Medium / Low", "Escalation protocol per risk level", "Resource allocation guidance", "Leadership communication trigger"],
+    nist: "Aligned with NIST SP 800-30 risk evaluation methodology",
+    keyMessage: "Without scoring, every incident feels equally urgent. With scoring, you always know where to focus."
+  },
+  {
+    num: 5,
+    icon: "📄",
+    title: "Final Incident Report",
+    subtitle: "Legally compliant post-incident documentation",
+    color: "#9ABDDC",
+    status: "prep",
+    statusLabel: "⏳ In preparation",
+    tools: ["Serbian Law on Information Security (2025)", "Structured report template", "Lessons learned process", "Feedback loop to Layer 3"],
+    provides: ["Full incident timeline and affected systems", "All actions taken with timestamps", "Evidence collected — chain of custody", "Communication steps and stakeholder notifications", "Lessons learned → updated playbooks"],
+    nist: "Supports NIST CSF 2.0 — Recover & Improve functions",
+    keyMessage: "Every incident handled is an opportunity to make the next response better. The loop never closes — it strengthens."
+  }
+];
+
+function toggleLayer(idx) {
+  const cards = document.querySelectorAll('.layer-card');
+  cards.forEach((c, i) => {
+    if (i === idx) c.classList.toggle('active');
+    else c.classList.remove('active');
+  });
+}
+
+function buildLayers() {
+  const container = document.getElementById('layerList');
+  LAYERS.forEach((layer, idx) => {
+    const statusClass = {active:'status-active', prep:'status-prep', starting:'status-starting'}[layer.status];
+
+    const card = document.createElement('div');
+    card.className = 'layer-card';
+    card.innerHTML = `
+      <div class="layer-header" onclick="toggleLayer(${idx})">
+        <div class="layer-num" style="background:${layer.color}">${layer.num}</div>
+        <div class="layer-icon">${layer.icon}</div>
+        <div class="layer-title-group">
+          <div class="layer-title">${layer.title}</div>
+          <div class="layer-subtitle">${layer.subtitle}</div>
+        </div>
+        <div class="layer-toggle">▼</div>
+      </div>
+      <div class="layer-detail">
+        <div class="layer-content">
+          <div class="detail-block">
+            <h4>🔧 Tools & Standards</h4>
+            <ul>${layer.tools.map(t=>`<li>${t}</li>`).join('')}</ul>
+            <div class="status-badge ${statusClass}">${layer.statusLabel}</div>
+          </div>
+          <div class="detail-block">
+            <h4>✅ What This Layer Provides</h4>
+            <ul>${layer.provides.map(p=>`<li>${p}</li>`).join('')}</ul>
+            <div style="margin-top:12px;font-size:11px;color:#9ABDDC;font-style:italic;">${layer.nist}</div>
+          </div>
+        </div>
+        <div style="padding:0 22px 16px;">
+          <div class="key-msg">"${layer.keyMessage}"</div>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+buildLayers();
+
+// Open Layer 1 by default
+document.querySelector('.layer-card').classList.add('active');
+</script>
+</body>
+</html>
