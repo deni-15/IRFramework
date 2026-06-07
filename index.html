@@ -337,6 +337,11 @@ const LAYERS = [
     statusLabel: "🔄 Starting rollout",
     tools: ["NIST SP 800-61r3 lifecycle structure", "NIST CSF 2.0 framework", "Incident-specific SOP templates", "Forensic tools & sandbox environment (Analysis phase)"],
     provides: ["Identification → Initial Assessment → Evidence Collection", "Analysis → Protective Measures → Recovery → Reporting", "Consistent structure across all incident types", "ATT&CK TTPs embedded in each relevant step"],
+    playbooks: [
+      { icon: "📧", name: "Phishing SOP" },
+      { icon: "🔑", name: "Credential Leak SOP" },
+      { icon: "🦠", name: "Malware SOP" },
+    ],
     nist: "Directly implements NIST SP 800-61r3 incident handling lifecycle",
     keyMessage: "A playbook turns expert knowledge into a repeatable procedure — so the right response happens every time."
   },
@@ -419,6 +424,21 @@ function buildLayers() {
         <div style="padding:0 22px 16px;">
           <div class="key-msg">"${layer.keyMessage}"</div>
         </div>
+        ${layer.playbooks ? `
+        <div style="padding:0 22px 20px;">
+          <div style="font-size:11px;font-weight:700;color:#9ABDDC;text-transform:uppercase;
+                      letter-spacing:1px;margin-bottom:10px;">📋 Available Playbooks</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+            ${layer.playbooks.map(pb => `
+            <div style="background:#0F1E2E;border:1.5px solid #1E3A52;border-radius:10px;
+                        padding:14px 16px;transition:border-color 0.2s;"
+                 onmouseover="this.style.borderColor='#9ABDDC'"
+                 onmouseout="this.style.borderColor='#1E3A52'">
+              <div style="font-size:22px;margin-bottom:8px;">${pb.icon}</div>
+              <div style="font-size:12px;font-weight:700;color:#fff;">${pb.name}</div>
+            </div>`).join('')}
+          </div>
+        </div>` : ''}
       </div>
     `;
     container.appendChild(card);
