@@ -6,7 +6,7 @@
 <title>Serbian CERT IR Framework — Interactive</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: #0F1E2E;
@@ -14,7 +14,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
-
+ 
 /* ── Header ── */
 .header {
   text-align: center;
@@ -44,14 +44,14 @@ body {
   margin-top: 8px;
   font-style: italic;
 }
-
+ 
 /* ── Main layout ── */
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 40px 20px;
 }
-
+ 
 /* ── Layer stack ── */
 .layers {
   display: flex;
@@ -59,7 +59,7 @@ body {
   gap: 12px;
   margin-bottom: 40px;
 }
-
+ 
 .layer-card {
   border-radius: 14px;
   border: 1.5px solid #1E3A52;
@@ -70,7 +70,7 @@ body {
 }
 .layer-card:hover { border-color: #9ABDDC; transform: translateX(6px); }
 .layer-card.active { border-color: #9ABDDC; transform: translateX(0); }
-
+ 
 .layer-header {
   display: flex;
   align-items: center;
@@ -79,7 +79,7 @@ body {
   transition: background 0.2s;
 }
 .layer-card.active .layer-header { background: #1E3A52; }
-
+ 
 .layer-num {
   width: 42px; height: 42px;
   border-radius: 50%;
@@ -91,12 +91,12 @@ body {
   flex-shrink: 0;
   color: #0F1E2E;
 }
-
+ 
 .layer-icon {
   font-size: 24px;
   flex-shrink: 0;
 }
-
+ 
 .layer-title-group { flex: 1; }
 .layer-title {
   font-size: 16px;
@@ -108,7 +108,7 @@ body {
   color: #9ABDDC;
   margin-top: 2px;
 }
-
+ 
 .layer-toggle {
   font-size: 18px;
   color: #9ABDDC;
@@ -116,7 +116,7 @@ body {
   flex-shrink: 0;
 }
 .layer-card.active .layer-toggle { transform: rotate(180deg); }
-
+ 
 /* ── Layer detail ── */
 .layer-detail {
   max-height: 0;
@@ -124,7 +124,7 @@ body {
   transition: max-height 0.4s ease;
 }
 .layer-card.active .layer-detail { max-height: 600px; }
-
+ 
 .layer-content {
   padding: 0 22px 22px;
   display: grid;
@@ -134,7 +134,7 @@ body {
 @media (max-width: 600px) {
   .layer-content { grid-template-columns: 1fr; }
 }
-
+ 
 .detail-block { }
 .detail-block h4 {
   font-size: 11px;
@@ -161,7 +161,7 @@ body {
   flex-shrink: 0;
   margin-top: 1px;
 }
-
+ 
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -175,7 +175,7 @@ body {
 .status-active   { background: #063B28; color: #34D399; border: 1px solid #34D399; }
 .status-prep     { background: #3B2A06; color: #F59E0B; border: 1px solid #F59E0B; }
 .status-starting { background: #1E3A52; color: #9ABDDC; border: 1px solid #9ABDDC; }
-
+ 
 /* ── Flow diagram (horizontal on desktop) ── */
 .flow-section {
   margin-bottom: 40px;
@@ -212,7 +212,7 @@ body {
 .flow-node .fn-num  { font-size: 10px; color: #9ABDDC; font-weight: 700; }
 .flow-node .fn-name { font-size: 11px; color: #E0E4E6; font-weight: 600; margin-top: 2px; }
 .flow-arrow { color: #9ABDDC; font-size: 20px; flex-shrink: 0; }
-
+ 
 /* ── Footer ── */
 .footer {
   text-align: center;
@@ -222,7 +222,7 @@ body {
   color: #4A6A85;
 }
 .footer a { color: #9ABDDC; text-decoration: none; }
-
+ 
 /* ── Tooltip / key message ── */
 .key-msg {
   background: #1E3A52;
@@ -237,15 +237,15 @@ body {
 </style>
 </head>
 <body>
-
+ 
 <div class="header">
   <div class="badge">REPUBLIC OF SERBIA</div>
   <h1>Cybersecurity Incident Response Framework</h1>
-  <p>CRDF Global Regional Cybersecurity Fellowship  ·  Daniela Androvic, MSc</p>
+  <p>CRDF Global Regional Cybersecurity Fellowship 2026  ·  Daniela Androvic, MSc</p>
 </div>
-
+ 
 <div class="container">
-
+ 
   <!-- Flow diagram -->
   <div class="flow-section">
     <div class="flow-title">Five-Layer Model — click any layer to explore</div>
@@ -281,39 +281,24 @@ body {
       </div>
     </div>
   </div>
-
+ 
   <!-- Layer cards -->
   <div class="layers" id="layerList"></div>
-
+ 
   <div class="key-msg">
     💡 Each layer feeds the next — from raw intelligence to regulatory reporting.
     The framework strengthens with every incident it handles.
   </div>
-
-  <div style="text-align:center; margin-top: 32px;">
-  <a href="risk_assessment_tool.html" style="
-    display: inline-block;
-    background: #9ABDDC;
-    color: #0F1E2E;
-    font-weight: 700;
-    font-size: 14px;
-    padding: 14px 32px;
-    border-radius: 10px;
-    text-decoration: none;
-    letter-spacing: 0.5px;
-    transition: background 0.2s;
-  ">⚖ Open Risk Assessment Tool →</a>
+ 
 </div>
-
-</div>
-
+ 
 <div class="footer">
   Strengthening the Serbian Cybersecurity Incident Response Framework
-  through the adoption of U.S. best practices, standards, and methodologies<br/>
+  through the adoption of U.S. best practices, standards, and methodologies.<br/>
   <a href="#">CRDF Global Regional Cybersecurity Fellowship</a>  ·
   Grounded in NIST CSF 2.0 / 800-61r3  ·  MITRE ATT&CK  ·  Serbian Law on Information Security
 </div>
-
+ 
 <script>
 const LAYERS = [
   {
@@ -347,7 +332,7 @@ const LAYERS = [
     icon: "📋",
     title: "Playbooks & Standard Operating Procedures",
     subtitle: "Standardized, reusable response templates",
-    color: "#5A8AB0",
+    color: "#9ABDDC",
     status: "starting",
     statusLabel: "🔄 Starting rollout",
     tools: ["NIST SP 800-61r3 lifecycle structure", "NIST CSF 2.0 framework", "Incident-specific SOP templates", "Forensic tools & sandbox environment (Analysis phase)"],
@@ -364,6 +349,7 @@ const LAYERS = [
     status: "starting",
     statusLabel: "🔄 Starting rollout",
     tools: ["5×5 Likelihood × Impact matrix", "NIST SP 800-30 methodology", "Contextual modifier scoring", "Risk Assessment Tool (web app)"],
+    showTool: true,
     provides: ["Risk score: Critical / High / Medium / Low", "Escalation protocol per risk level", "Resource allocation guidance", "Leadership communication trigger"],
     nist: "Aligned with NIST SP 800-30 risk evaluation methodology",
     keyMessage: "Without scoring, every incident feels equally urgent. With scoring, you always know where to focus."
@@ -382,7 +368,7 @@ const LAYERS = [
     keyMessage: "Every incident handled is an opportunity to make the next response better. The loop never closes — it strengthens."
   }
 ];
-
+ 
 function toggleLayer(idx) {
   const cards = document.querySelectorAll('.layer-card');
   cards.forEach((c, i) => {
@@ -390,12 +376,12 @@ function toggleLayer(idx) {
     else c.classList.remove('active');
   });
 }
-
+ 
 function buildLayers() {
   const container = document.getElementById('layerList');
   LAYERS.forEach((layer, idx) => {
     const statusClass = {active:'status-active', prep:'status-prep', starting:'status-starting'}[layer.status];
-
+ 
     const card = document.createElement('div');
     card.className = 'layer-card';
     card.innerHTML = `
@@ -413,6 +399,15 @@ function buildLayers() {
           <div class="detail-block">
             <h4>🔧 Tools & Standards</h4>
             <ul>${layer.tools.map(t=>`<li>${t}</li>`).join('')}</ul>
+            ${layer.showTool ? `<a href="risk_assessment_tool.html" style="
+              display:inline-flex;align-items:center;gap:6px;
+              margin-top:12px;margin-bottom:8px;
+              background:#9ABDDC;color:#0F1E2E;
+              font-weight:700;font-size:11px;
+              padding:8px 16px;border-radius:8px;
+              text-decoration:none;letter-spacing:0.3px;">
+              ⚖ Open Risk Assessment Tool →
+            </a>` : ''}
             <div class="status-badge ${statusClass}">${layer.statusLabel}</div>
           </div>
           <div class="detail-block">
@@ -429,9 +424,9 @@ function buildLayers() {
     container.appendChild(card);
   });
 }
-
+ 
 buildLayers();
-
+ 
 // Open Layer 1 by default
 document.querySelector('.layer-card').classList.add('active');
 </script>
